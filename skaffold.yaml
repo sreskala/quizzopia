@@ -7,7 +7,7 @@ build:
     push: false
   artifacts:
     - image: samsagas/riddle-shield
-      context: riddle-shield
+      context: auth
       docker:
         dockerfile: Dockerfile
       sync:
