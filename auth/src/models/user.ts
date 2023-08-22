@@ -5,7 +5,7 @@ interface IUser {
     email: string;
     username?: string;
     password: string;
-    friends?: IUser[];
+    friends?: UserDocument[];
 }
 
 interface UserModel extends mongoose.Model<UserDocument> {
