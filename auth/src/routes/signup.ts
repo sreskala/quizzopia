@@ -3,7 +3,7 @@ import { ValidationChain, body } from 'express-validator';
 import jwt from 'jsonwebtoken';
 import { User } from '../models/user';
 
-import { validateRequest, BadRequestError } from '@reskalaware/common';
+import { validateRequest, BadRequestError } from '@reskalaware/enigma-essentials';
 
 const router = express.Router();
 const validationRules: ValidationChain[] = [
@@ -12,26 +12,32 @@ const validationRules: ValidationChain[] = [
     .withMessage('Email must be valid'),
     body('password')
     .trim()
-    .isLength({ min: 8, max: 25 })
-    .withMessage('Password must be between 4 and 20 characters')
+    .isLength({ min: 8 })
+    .withMessage('Password must be at least 8 characters')
 ]
 
 router.post('/api/users/signup', validationRules, validateRequest ,async (req: Request, res: Response) => {
-    const { email, password } = req.body;
+    const { email, password, username } = req.body;
 
-    const existingUser  = await User.findOne({ email });
+    const existingUserEmail  = await User.findOne({ email });
+    const existingUserName = await User.findOne({ username });
 
-    if (existingUser) {
+    if (existingUserEmail) {
         throw new BadRequestError('Email already in use')
     }
 
-    const user = User.build({ email, password });
+    if (existingUserName) {
+        throw new BadRequestError('Username already in use')
+    }
+
+    const user = User.build({ email, password, username });
     await user.save();
 
     //generate jwt
     const userJwt = jwt.sign({
         id: user.id,
-        email: user.email
+        email: user.email,
+        username: username ?? undefined
     }, process.env.JWT_KEY as string)
 
     //store it on session object

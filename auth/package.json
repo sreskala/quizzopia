@@ -20,6 +20,7 @@
   "author": "Sam Reskala",
   "license": "ISC",
   "dependencies": {
+    "@reskalaware/enigma-essentials": "^2.0.1",
     "cookie-session": "^2.0.0",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",

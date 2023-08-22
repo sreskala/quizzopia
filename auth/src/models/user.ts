@@ -3,7 +3,7 @@ import { Password } from "../utils/password";
 
 interface IUser {
     email: string;
-    username: string;
+    username?: string;
     password: string;
     friends?: IUser[];
 }

@@ -4,7 +4,7 @@ import { User } from '../models/user';
 import { Password } from '../utils/password';
 import jwt from 'jsonwebtoken'
 
-//import { validateRequest, BadRequestError } from '@reskalaware/common';
+import { validateRequest, BadRequestError } from '@reskalaware/enigma-essentials';
 
 const router = express.Router();
 
@@ -24,15 +24,15 @@ router.post('/api/users/login', validationRules, validateRequest, async (req: Re
 
     const existingUser = await User.findOne({ email });
 
-    // if (!existingUser) {
-    //     throw new BadRequestError('Invalid credentials');
-    // }
+    if (!existingUser) {
+        throw new BadRequestError('Invalid credentials');
+    }
 
     const passwordsMatch = await Password.compare(existingUser.password, password);
 
-    // if (!passwordsMatch) {
-    //     throw new BadRequestError('Invalid credentials');
-    // }
+    if (!passwordsMatch) {
+        throw new BadRequestError('Invalid credentials');
+    }
 
     //generate jwt
     const userJwt = jwt.sign({
