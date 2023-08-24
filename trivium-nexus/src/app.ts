@@ -4,6 +4,8 @@ import { json } from 'body-parser';
 import cookieSession from 'cookie-session';
 
 import { errorHandler, NotFoundError, currentUser } from '@reskalaware/enigma-essentials';
+import { getQuestionsRouter } from './routes/get-questions';
+import { createQuestionsRouter } from './routes/new-question';
 // import { createTicketRouter } from './routes/new';
 // import { showTicketRouter } from './routes/show';
 // import { updateTicketRouter } from './routes/update';
@@ -19,6 +21,8 @@ app.use(cookieSession({
 }));
 app.use(currentUser);
 
+app.use(getQuestionsRouter);
+app.use(createQuestionsRouter);
 // app.use(createTicketRouter);
 // app.use(showTicketRouter);
 // app.use(updateTicketRouter)

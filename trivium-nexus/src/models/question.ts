@@ -2,14 +2,14 @@ import { QuestionCategory } from "@reskalaware/enigma-essentials";
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
-interface QuestionAttributes {
+export interface QuestionAttributes {
     prompt: string;
     answer: string;
     category: QuestionCategory;
     otherPossibleAnswers?: string[];
 }
 
-interface QuestionDocument extends mongoose.Document {
+export interface QuestionDocument extends mongoose.Document {
     prompt: string;
     answer: string;
     category: QuestionCategory;

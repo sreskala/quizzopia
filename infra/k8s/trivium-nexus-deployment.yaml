@@ -1,0 +1,46 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivium-nexus-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: trivium-nexus
+  template:
+    metadata: 
+      labels:
+        app: trivium-nexus
+    spec:
+      containers:
+        - name: trivium-nexus
+          image: samsagas/trivium-nexus
+          env:
+            # - name: NATS_URL
+            #   value: 'http://nats-srv:4222'
+            # - name: NATS_CLUSTER_ID
+            #   value: ticketing
+            # - name: NATS_CLIENT_ID
+            #   valueFrom:
+            #     fieldRef:
+            #       fieldPath: metadata.name
+            - name: JWT_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: jwt-trivia-secret
+                  key: JWT_KEY
+            - name: MONGO_URI
+              value: 'mongodb://trivium-nexus-mongo-service:27017/trivium'
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trivium-nexus-service
+spec:
+  selector:
+    app: trivium-nexus
+  ports:
+    - name: trivium-nexus
+      protocol: TCP
+      port: 3001
+      targetPort: 3001

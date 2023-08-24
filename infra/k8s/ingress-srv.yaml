@@ -17,13 +17,13 @@ spec:
                 name: auth-service
                 port:
                   number: 3030
-          # - path: /api/tickets/?(.*)
-          #   pathType: ImplementationSpecific
-          #   backend:
-          #     service:
-          #       name: tickets-srv
-          #       port:
-          #         number: 3000
+          - path: /api/trivium/?(.*)
+            pathType: ImplementationSpecific
+            backend:
+              service:
+                name: trivium-nexus-service
+                port:
+                  number: 3001
           # - path: /api/orders/?(.*)
           #   pathType: ImplementationSpecific
           #   backend:

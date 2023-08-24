@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: trivium-nexus-mongo-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: trivium-nexus-mongo
+  template:
+    metadata:
+      labels:
+        app: trivium-nexus-mongo
+    spec:
+      containers:
+        - name: trivium-nexus-mongo
+          image: mongo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: trivium-nexus-mongo-service
+spec:
+  selector:
+    app: trivium-nexus-mongo
+  ports:
+    - name: db
+      protocol: TCP
+      port: 27017
+      targetPort: 27017
