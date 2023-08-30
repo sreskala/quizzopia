@@ -2,7 +2,7 @@ import { QuestionCategory } from "@reskalaware/enigma-essentials";
 import mongoose from "mongoose";
 import { updateIfCurrentPlugin } from 'mongoose-update-if-current';
 
-export interface QuestionAttributes {
+export interface IQuestion {
     prompt: string;
     answer: string;
     category: QuestionCategory;
@@ -18,7 +18,8 @@ export interface QuestionDocument extends mongoose.Document {
 }
 
 interface QuestionModel extends mongoose.Model<QuestionDocument> {
-    build(attributes: QuestionAttributes): QuestionDocument;
+    build(attributes: IQuestion): QuestionDocument;
+    randomizeQuestions(questions: IQuestion[], amount: number): IQuestion[]
 }
 
 const questionSchema = new mongoose.Schema({
@@ -47,8 +48,21 @@ const questionSchema = new mongoose.Schema({
 questionSchema.set('versionKey', 'version');
 questionSchema.plugin(updateIfCurrentPlugin);
 
-questionSchema.statics.build = (attributes: QuestionAttributes) => {
+const shuffle = <T>(array: T[]) => { 
+    for (let i = array.length - 1; i > 0; i--) { 
+      const j = Math.floor(Math.random() * (i + 1)); 
+      [array[i], array[j]] = [array[j], array[i]]; 
+    }
+    return array; 
+};
+
+questionSchema.statics.build = (attributes: IQuestion) => {
     return new Question(attributes);
+}
+
+questionSchema.statics.randomizeQuestions = (questions: IQuestion[], amount = 10) => {
+    const shuffledQuestions = shuffle<IQuestion>(questions);
+    return shuffledQuestions.slice(0, amount);
 }
 
 const Question = mongoose.model<QuestionDocument, QuestionModel>('Question', questionSchema);

@@ -1,6 +1,6 @@
 import express, { Request, Response } from "express";
 import { NotFoundError } from "@reskalaware/enigma-essentials";
-import { Question, QuestionDocument } from "../models/question";
+import { Question, QuestionDocument, IQuestion } from "../models/question";
 import { FilterQuery } from "mongoose";
 
 const router = express.Router();
