@@ -1,5 +1,5 @@
 import express, { Request, Response } from "express";
-import { Question } from "../models/question";
+import { IQuestion, Question, QuestionDocument } from "../models/question";
 import { QuestionCategory, validateRequest } from "@reskalaware/enigma-essentials";
 import { ValidationChain, body } from "express-validator";
 
@@ -12,12 +12,17 @@ const validationRules: ValidationChain[] = [
 ]
 
 router.post('/api/trivium/questions', validationRules, validateRequest, async (req: Request, res: Response) => {
-    const { prompt, answer, category } = req.body;
+    //This is an array
+    const { questions } = req.body;
 
-    const question = Question.build({ prompt, answer, category });
-    await question.save();
+    const builtQuestions: QuestionDocument[] = []
+    for (const questionInput of questions) {
+        const { prompt, answer, category, otherPossibleAnswers } = questionInput;
+        builtQuestions.push(Question.build({ prompt, answer, category, otherPossibleAnswers }));
+    }
+    await Question.insertMany(builtQuestions);
     
-    res.status(201).send(question)
+    res.status(201).send({ questions: builtQuestions.map(question => question.prompt )});
 });
 
 export  { router as createQuestionsRouter }

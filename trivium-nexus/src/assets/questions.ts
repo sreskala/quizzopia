@@ -1,7 +1,7 @@
 import { QuestionCategory } from "@reskalaware/enigma-essentials";
 import { IQuestion } from "../models/question";
 
-const questions: IQuestion[] = [
+export const questions: IQuestion[] = [
     {
         prompt: 'The principal that states that the more precisely the position of a particle is known, the less precisely its momentum can be known, and vice versa.',
         answer: 'Heisenberg Uncertainty Principle',

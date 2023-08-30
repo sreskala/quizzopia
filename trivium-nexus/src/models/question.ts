@@ -19,7 +19,7 @@ export interface QuestionDocument extends mongoose.Document {
 
 interface QuestionModel extends mongoose.Model<QuestionDocument> {
     build(attributes: IQuestion): QuestionDocument;
-    randomizeQuestions(questions: IQuestion[], amount: number): IQuestion[]
+    randomizeQuestions(questions: QuestionDocument[], amount: number): QuestionDocument[]
 }
 
 const questionSchema = new mongoose.Schema({
@@ -60,9 +60,8 @@ questionSchema.statics.build = (attributes: IQuestion) => {
     return new Question(attributes);
 }
 
-questionSchema.statics.randomizeQuestions = (questions: IQuestion[], amount = 10) => {
-    const shuffledQuestions = shuffle<IQuestion>(questions);
-    return shuffledQuestions.slice(0, amount);
+questionSchema.statics.randomizeQuestions = (questions: QuestionDocument[], amount = 10): QuestionDocument[] => {
+     return shuffle<QuestionDocument>(questions).slice(0, amount);
 }
 
 const Question = mongoose.model<QuestionDocument, QuestionModel>('Question', questionSchema);
