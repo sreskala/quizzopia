@@ -20,7 +20,7 @@ const gameSchema = new mongoose.Schema({
         type: String,
         required: true
     },
-    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Game' }]
+    questions: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }]
 }, {
     toJSON: {
         transform(doc, ret) {

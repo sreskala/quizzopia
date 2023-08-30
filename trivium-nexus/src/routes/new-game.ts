@@ -20,9 +20,9 @@ router.post('/api/trivium/game', requireAuth, async (req: Request, res: Response
         questions: shuffledQuestions
     });
 
-    await game.save();
+    const savedGame = (await game.save()).populate('questions');
 
     res.status(201).send(game);
 });
 
-export  { router as createQuestionsRouter }
+export  { router as createGameRouter }

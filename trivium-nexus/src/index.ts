@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import { app } from './app';
 import { natsWrapper } from './nats-wrapper';
+import { startup } from './startup';
 // import { OrderCreatedListener } from './events/listeners/order-created-listener';
 // import { OrderCancelledListener } from './events/listeners/order-cancelled-listener';
 
@@ -38,7 +39,9 @@ const start = async () => {
         // new OrderCreatedListener(natsWrapper.client).listen();
         // new OrderCancelledListener(natsWrapper.client).listen();
         
-        await mongoose.connect(process.env.MONGO_URI)
+        console.log('Initializing Trivium Nexus DB');
+        await mongoose.connect(process.env.MONGO_URI);
+        await startup();
     } catch (error) {
         console.error(error);
     }
