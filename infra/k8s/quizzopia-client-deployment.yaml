@@ -1,0 +1,30 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: quizzopia-client-deployment
+spec:
+  replicas: 1
+  selector: 
+    matchLabels:
+      app: quizzopia-client
+  template:
+    metadata: 
+      labels:
+        app: quizzopia-client
+    spec:
+      containers:
+        - name: quizzopia-client
+          image: samsagas/quizzopia-client
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: quizzopia-client-service
+spec:
+  selector:
+    app: quizzopia-client
+  ports:
+    - name: quizzopia-client
+      protocol: TCP
+      port: 3000
+      targetPort: 3000
